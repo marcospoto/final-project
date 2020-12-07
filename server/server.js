@@ -1,14 +1,30 @@
-const express = require('express');
-const morgan = require('morgan');
+const express = require("express");
+const bodyParser = require("body-parser");
+const morgan = require("morgan");
+const { createUser, getUser } = require("./handlers");
 
-const PORT = 5678;
+require("dotenv").config();
+const PORT = process.env.PORT || 5678;
 
-var app = express();
+express()
+  .use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Methods",
+      "OPTIONS, HEAD, GET, PUT, POST, DELETE"
+    );
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+  })
+  .use(morgan("tiny"))
+  .use(express.static("./client/build"))
+  .use(bodyParser.json())
+  .use(express.urlencoded({ extended: false }))
 
-app.use(express.json());
-app.use(morgan('dev'));
-app.use(require('./routes'));
+  .post("/users", createUser)
+  .get("/users", getUser)
 
-const server = app.listen(PORT, function () {
-  console.info('🌍 Listening on port ' + server.address().port);
-});
+  .listen(PORT, () => console.log(`Listening on port ${PORT}`));

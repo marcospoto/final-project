@@ -4,11 +4,13 @@ import { MovieProvider } from "./components/MovieContext";
 
 import App from "./components/App";
 
-const rootElement = document.getElementById("root");
+import FirebaseProvider from "../src/components/FirebaseContext";
 
 ReactDOM.render(
-  <MovieProvider>
-    <App />
-  </MovieProvider>,
-  rootElement
+  <FirebaseProvider>
+    <MovieProvider>
+      <App />
+    </MovieProvider>
+  </FirebaseProvider>,
+  document.getElementById("root")
 );

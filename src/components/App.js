@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { HomePage } from "./HomePage";
 import { MovieDetails } from "./MovieDetails";
+import { Header } from "./Header";
+import { LoginForm } from "./LoginForm";
 
 import GlobalStyles from "./GlobalStyles";
 
@@ -11,9 +13,13 @@ function App() {
   return (
     <BrowserRouter>
       <GlobalStyles />
+      <Header />
       <Switch>
         <Route exact path="/">
           <HomePage />
+        </Route>
+        <Route exact path="/login">
+          <LoginForm />
         </Route>
         <Route exact path="/movie/:id">
           <MovieDetails />

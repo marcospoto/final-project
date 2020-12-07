@@ -7,7 +7,6 @@ import { NavLink } from "react-router-dom";
 import moment from "moment";
 
 export const MovieDetails = () => {
-  // const { movies } = useMovies();
   const { id } = useParams();
   const [movie, setMovie] = useState([]);
   const [cast, setcast] = useState([]);
@@ -17,13 +16,13 @@ export const MovieDetails = () => {
     fetch(`${URL}movie/${id}?api_key=${KEY}&language=en-US`)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setMovie(res);
 
         fetch(`${URL}movie/${id}/credits?api_key=${KEY}`)
           .then((res) => res.json())
           .then((res) => {
-            console.log(res.cast);
+            // console.log(res.cast);
             setcast(res.cast);
           });
       });
@@ -35,12 +34,11 @@ export const MovieDetails = () => {
 
   const movieScore = movie?.vote_average;
 
-  console.log(movie?.genres);
-  console.log(cast.name);
+  // console.log(movie?.genres);
+  // console.log(cast.name);
 
   return (
     <Wrapper>
-      <NavLink to="/">Main</NavLink>
       <Main>
         <div>
           {movie && <MovieImage src={`${Image}w500${movie?.poster_path}`} />}

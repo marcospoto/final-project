@@ -7,7 +7,7 @@ import { useMovies } from "./MovieContext";
 
 export const HomePage = () => {
   const { movies, handleClick } = useMovies();
-  console.log(movies[0]?.backdrop_path);
+  // console.log(movies[0]?.backdrop_path);
 
   return (
     <Wrapper>
