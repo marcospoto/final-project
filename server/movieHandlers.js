@@ -4,7 +4,10 @@ const { MONGO_URI } = process.env;
 const { MongoClient } = require("mongodb");
 const assert = require("assert");
 
-require("dotenv").config();
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
 
 const addMovieUser = async (req, res) => {
   console.log("addMovieUser");
@@ -14,9 +17,7 @@ const addMovieUser = async (req, res) => {
 
   const db = client.db("movieProject");
 
-  const newUser = await db
-    .collection("movieUsers")
-    .insertOne({ name: req.body });
+  const newUser = await db.collection("movieUsers").insertOne({ ...req.body });
 
   res.status(201).json({
     status: 201,

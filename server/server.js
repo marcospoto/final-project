@@ -30,7 +30,7 @@ express()
   .use(express.urlencoded({ extended: false }))
 
   .post("/users", createUser)
-  .get("/users", getUser)
+  // .get("/users", getUser)
 
   .post("/movie-users", addMovieUser)
   .get("/movie-users", getMovieUser)

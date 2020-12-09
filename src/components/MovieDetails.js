@@ -11,6 +11,7 @@ export const MovieDetails = () => {
   const [movie, setMovie] = useState([]);
   const [cast, setcast] = useState([]);
   const [actors, setActors] = useState(false);
+  const [buttonText, setButtonText] = useState("Show actors");
 
   useEffect(() => {
     fetch(`${URL}movie/${id}?api_key=${KEY}&language=en-US`)
@@ -30,6 +31,9 @@ export const MovieDetails = () => {
 
   const handleActors = () => {
     setActors(!actors);
+    const isButtonToggled = !buttonText;
+    const changeText = isButtonToggled ? "Show actors" : "Hide actors";
+    return setButtonText(changeText);
   };
 
   const movieScore = movie?.vote_average;
@@ -75,7 +79,7 @@ export const MovieDetails = () => {
       <div>
         <CastNamesContainer>{castNames}</CastNamesContainer>
         <ButtonContainer>
-          <LoadActors onClick={handleActors}>See Actors</LoadActors>
+          <LoadActors onClick={handleActors}>{buttonText}</LoadActors>
         </ButtonContainer>
         {actors && <CastGrid cast={cast} />}
       </div>

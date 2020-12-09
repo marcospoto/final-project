@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 export const ProfileMenu = () => {
-  const { appUser } = useContext(FirebaseContext);
+  const { appUser, handleSignOut } = useContext(FirebaseContext);
 
   const dropdownRef = useRef(null);
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
@@ -29,7 +29,7 @@ export const ProfileMenu = () => {
               </NavigationLink>
             </li>
             <li>
-              <NavigationLink exact to="/">
+              <NavigationLink onClick={handleSignOut} exact to="/">
                 Sign out
               </NavigationLink>
             </li>

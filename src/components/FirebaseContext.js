@@ -21,39 +21,58 @@ const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
 
-const FirebaseProvider = ({ children, signInWithGoogle, signOut, user }) => {
+const FirebaseProvider = ({ children, signOut, user }) => {
   const [appUser, setAppUser] = useState({});
   const [message, setMessage] = useState("");
 
   const handleSignOut = () => {
-    signOut();
-    setAppUser({});
+    firebaseAppAuth.signOut();
+  };
+
+  const signInWithGoogle = async (ev) => {
+    ev.preventDefault();
+    await firebaseAppAuth.signInWithPopup(providers.googleProvider);
   };
 
   useEffect(() => {
-    if (user) {
-      fetch(`/users`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-        }),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          setAppUser(json.data);
-          console.log("------");
-          console.log(json.data);
+    const unlisten = firebaseAppAuth.onAuthStateChanged((user) => {
+      console.log("outside listener", user);
 
-          // Step 1: Fetch user enamil from MongoDB and apply to appUserContext
-          // Step 2: If no email exists, create one instead
-        });
-    }
-  }, [user]);
+      if (user) {
+        // setAppUser(user);
+        console.log("signed in current user", user);
+        fetch(`/users`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+          }),
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            setAppUser(user);
+            console.log("------");
+            console.log(json.data);
+
+            // Step 1: Fetch user enamil from MongoDB and apply to appUserContext
+            // Step 2: If no email exists, create one instead
+          });
+      } else {
+        console.log("signed out user:", user);
+        setAppUser({});
+      }
+    });
+
+    return () => {
+      unlisten();
+    };
+  }, []);
+
+  console.log(appUser);
 
   return (
     <FirebaseContext.Provider
@@ -68,3 +87,65 @@ export default withFirebaseAuth({
   providers,
   firebaseAppAuth,
 })(FirebaseProvider);
+
+// useEffect(() => {
+//   const unlisten = firebaseAppAuth.onAuthStateChanged((user) => {
+
+//     console.log("signed in current user", user);
+
+//     if (user) {
+//       console.log("signed in current user", user);
+//       fetch(`/users`, {
+//         method: "post",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           displayName: user.displayName,
+//           email: user.email,
+//           photoURL: user.photoURL,
+//         }),
+//       })
+//         .then((res) => res.json())
+//         .then((json) => {
+//           setAppUser(json.data);
+//           console.log("------");
+//           console.log(json.data);
+
+//           // Step 1: Fetch user enamil from MongoDB and apply to appUserContext
+//           // Step 2: If no email exists, create one instead
+//         });
+//       setAppUser(user);
+//     } else {
+//       console.log("signed out user:", user);
+//       setAppUser({});
+//     }
+//   }
+
+//   // if (user) {
+//   //   fetch(`/users`, {
+//   //     method: "post",
+//   //     headers: {
+//   //       "Content-Type": "application/json",
+//   //     },
+//   //     body: JSON.stringify({
+//   //       displayName: user.displayName,
+//   //       email: user.email,
+//   //       photoURL: user.photoURL,
+//   //     }),
+//   //   })
+//   //     .then((res) => res.json())
+//   //     .then((json) => {
+//   //       setAppUser(json.data);
+//   //       console.log("------");
+//   //       console.log(json.data);
+
+//   //       // Step 1: Fetch user enamil from MongoDB and apply to appUserContext
+//   //       // Step 2: If no email exists, create one instead
+//   //     });
+//   // }
+
+//   return () => {
+//     unlisten();
+//   };
+// },[])

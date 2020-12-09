@@ -7,7 +7,7 @@ import { FirebaseContext } from "./FirebaseContext";
 import { ProfileMenu } from "./ProfileMenu";
 
 export const Header = () => {
-  const { appUser } = useContext(FirebaseContext);
+  const { appUser, handleSignOut } = useContext(FirebaseContext);
   // const { currentUser } = useCurrentUser();
 
   // var loginButton;
