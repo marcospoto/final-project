@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   background: ${({ image }) => {
     return `url(${image})`;
   }};
-  min-height: 400px;
+  min-height: 600px;
   background-size: 100%, auto;
   background-position: center, center;
   background-repeat: no-repeat;

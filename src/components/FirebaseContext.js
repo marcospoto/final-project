@@ -46,6 +46,11 @@ const FirebaseProvider = ({ children, signInWithGoogle, signOut, user }) => {
         .then((res) => res.json())
         .then((json) => {
           setAppUser(json.data);
+          console.log("------");
+          console.log(json.data);
+
+          // Step 1: Fetch user enamil from MongoDB and apply to appUserContext
+          // Step 2: If no email exists, create one instead
         });
     }
   }, [user]);

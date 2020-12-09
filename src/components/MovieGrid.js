@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useMovies } from "./MovieContext";
 import { Image } from "../API";
+import { NavLink } from "react-router-dom";
 
 export const MovieGrid = () => {
   const { movies } = useMovies();
@@ -11,12 +12,11 @@ export const MovieGrid = () => {
       {movies.map((movie, index) => {
         return (
           <ImageContainer key={index}>
-            <a />
-            <MovieImage
-              src={movie.poster_path && `${Image}w500${movie.poster_path}`}
-            />
-
-            <a href={`/movie/${movie.id}`}>"hello"</a>
+            <NavigationLink exact to={`/movie/${movie.id}`}>
+              <MovieImage
+                src={movie.poster_path && `${Image}w500${movie.poster_path}`}
+              />
+            </NavigationLink>
           </ImageContainer>
         );
       })}
@@ -25,17 +25,23 @@ export const MovieGrid = () => {
 };
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
   align-items: center;
-  grid-gap: 1rem;
   margin-top: 40px;
 `;
 
 const ImageContainer = styled.div``;
 
+const NavigationLink = styled(NavLink)``;
+
 const MovieImage = styled.img`
   max-width: 400px;
   padding: 10px;
   border-radius: 30px;
+  align-items: center;
+  @media (max-width: 768px) {
+    max-width: 150px;
+  }
 `;

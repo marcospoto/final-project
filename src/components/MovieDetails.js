@@ -34,8 +34,7 @@ export const MovieDetails = () => {
 
   const movieScore = movie?.vote_average;
 
-  // console.log(movie?.genres);
-  // console.log(cast.name);
+  const castNames = cast.map((cast) => cast?.name + ", ");
 
   return (
     <Wrapper>
@@ -57,9 +56,11 @@ export const MovieDetails = () => {
             </div>
             <Score
               style={
-                movieScore >= 6
-                  ? { backgroundColor: "green" }
-                  : { backgroundColor: "red" }
+                movieScore < 6
+                  ? { backgroundColor: "red" }
+                  : movieScore < 7.5
+                  ? { backgroundColor: "orange" }
+                  : { backgroundColor: "green" }
               }
             >
               {movieScore}
@@ -72,11 +73,7 @@ export const MovieDetails = () => {
         </InfoContainer>
       </Main>
       <div>
-        <CastNamesContainer>
-          {cast.map((cast) => {
-            return <CastNames>{cast?.name}</CastNames>;
-          })}
-        </CastNamesContainer>
+        <CastNamesContainer>{castNames}</CastNamesContainer>
         <ButtonContainer>
           <LoadActors onClick={handleActors}>See Actors</LoadActors>
         </ButtonContainer>
@@ -136,6 +133,7 @@ const ScoreText = styled.p``;
 
 const Score = styled.h1`
   text-align: center;
+  align-items: center;
   min-width: 60px;
   min-height: 60px;
   padding: 10px;
@@ -151,6 +149,7 @@ const Summary = styled.h5`
 const CastNamesContainer = styled.div`
   display: flex;
   font-size: 1rem;
+  margin: 10px;
 `;
 
 const CastNames = styled.div`
@@ -162,6 +161,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 50px 0;
 `;
 
 const LoadActors = styled.button`

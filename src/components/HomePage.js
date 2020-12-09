@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Image } from "../API";
 import styled from "styled-components";
 import { MainMovie } from "./MainMovie";
@@ -8,6 +8,15 @@ import { useMovies } from "./MovieContext";
 export const HomePage = () => {
   const { movies, handleClick } = useMovies();
   // console.log(movies[0]?.backdrop_path);
+
+  const ref = useRef(null);
+
+  const getPosition = () => {
+    console.log(ref.current);
+    if (ref.current) {
+      ref.current.scrollIntoView();
+    }
+  };
 
   return (
     <Wrapper>
@@ -20,8 +29,18 @@ export const HomePage = () => {
       )}
       {movies && <MovieGrid />}
       <ButtonContainer>
-        <LoadMovies onClick={handleClick}>load more</LoadMovies>
+        <span ref={ref}></span>
+        <LoadMovies
+          href="#"
+          onClick={() => {
+            handleClick();
+            return false;
+          }}
+        >
+          load more
+        </LoadMovies>
       </ButtonContainer>
+      {ref && getPosition()}
     </Wrapper>
   );
 };
@@ -35,9 +54,10 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 30px 0;
 `;
 
-const LoadMovies = styled.button`
+const LoadMovies = styled.a`
   border: none;
   background: #404040;
   color: #ffffff !important;

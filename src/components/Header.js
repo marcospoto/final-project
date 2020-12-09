@@ -1,48 +1,73 @@
 // import { ReactComponent as Logo } from "../assets/logo.svg";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { FiHome, FiUser, FiBookmark } from "react-icons/fi";
+import { FirebaseContext } from "./FirebaseContext";
+import { ProfileMenu } from "./ProfileMenu";
 
 export const Header = () => {
+  const { appUser } = useContext(FirebaseContext);
   // const { currentUser } = useCurrentUser();
+
+  // var loginButton;
+  // if (appUser) {
+  //   loginButton = <Option>{appUser.displayName}</Option>;
+  // } else {
+  //   loginButton = <Option2>Sign in</Option2>;
+  // }
+
+  console.log(appUser);
 
   return (
     <Wrapper>
-      {/* <StyledLogo src={Logo} /> */}
+      <MobileHeader></MobileHeader>
       <Div>
         <NavigationLink exact to="/">
           <FiHome />
           <Option> Home</Option>
         </NavigationLink>
       </Div>
-      <Div>
-        <NavigationLink to="/login">
-          <FiUser /> <Option> Sign in</Option>
-          {/* <NavigationLink to={`/${currentUser.handle}`}>Profile</NavigationLink> */}
-        </NavigationLink>
-      </Div>
-      <Div>
+      {appUser.email ? (
+        <ProfileMenu />
+      ) : (
+        <Div>
+          <NavigationLink to="/login">
+            <FiUser />
+          </NavigationLink>
+        </Div>
+      )}
+      {/* <Div>
         <NavigationLink to="/bookmarks">
           <FiBookmark />
-          <Option> Bookmarks</Option>
+          <Option>Bookmarks</Option>
         </NavigationLink>
-      </Div>
+      </Div> */}
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  background: white;
   width: 100%;
   padding: 30px;
   background-color: #222;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+`;
+
+const MobileHeader = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: block !important;
+  }
 `;
 
 const Div = styled.span`
   display: inline;
-
   text-decoration: none;
   padding: 10px;
   :hover {
@@ -61,6 +86,10 @@ const NavigationLink = styled(NavLink)`
 `;
 
 const Option = styled.div`
+  margin: 0 10px;
+`;
+
+const Option2 = styled.div`
   margin: 0 10px;
 `;
 

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Image } from "../API";
 
 export const CastGrid = ({ cast }) => {
-  console.log(cast);
+  // console.log(cast);
   return (
     <Wrapper>
       {cast.map((cast, index) => {

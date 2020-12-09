@@ -8,7 +8,7 @@ export const LoginForm = () => {
     FirebaseContext
   );
 
-  console.log(appUser);
+  // console.log(appUser);
   return (
     <StyledPageWrapper>
       <StyledHeader>
