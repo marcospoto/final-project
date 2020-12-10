@@ -5,7 +5,7 @@ const { createUser, getUser } = require("./handlers");
 const {
   addMovieUser,
   getMovieUser,
-  createFavorite,
+  handleFavorite,
 } = require("./movieHandlers");
 
 require("dotenv").config();
@@ -34,7 +34,7 @@ express()
 
   .post("/movie-users", addMovieUser)
   .get("/movie-users", getMovieUser)
-  .post("/favorites", createFavorite)
+  .post("/favorites", handleFavorite)
 
   // var movieUser = {
   //   email: 'marcospoto@hotmail.com',

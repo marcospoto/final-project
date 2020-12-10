@@ -4,6 +4,7 @@ import { FiUser } from "react-icons/fi";
 import { useDetectOutsideClick } from "./useDetectOutsideClick";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { Favorites } from "./Favorites";
 
 export const ProfileMenu = () => {
   const { appUser, handleSignOut } = useContext(FirebaseContext);
@@ -24,9 +25,7 @@ export const ProfileMenu = () => {
         <Nav ref={dropdownRef}>
           <ul>
             <li>
-              <NavigationLink exact to="/profile">
-                Profile
-              </NavigationLink>
+              <NavigationLink to="/favorites">Favorites</NavigationLink>
             </li>
             <li>
               <NavigationLink onClick={handleSignOut} exact to="/">
@@ -51,6 +50,7 @@ const Div = styled.span`
   display: inline;
   text-decoration: none;
   padding: 10px;
+  font-size: 20px;
   cursor: pointer;
   :hover {
     color: purple;
@@ -75,15 +75,17 @@ const Nav = styled.div`
   position: absolute;
   top: 50px;
   right: 0;
-  width: 100px;
+  width: 180px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
-  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  /* transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s; */
   opacity: 1;
   /* visibility: visible; */
   transform: translateY(0);
   z-index: 1;
-  background: #000;
-  padding: 10px;
+  background: rgb(76, 0, 255, 0.2);
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
 `;
 const NavigationLink = styled(NavLink)`
   text-decoration: none;
@@ -91,4 +93,5 @@ const NavigationLink = styled(NavLink)`
   font-weight: bold;
   margin-left: 13px;
   display: flex;
+  padding: 10px;
 `;

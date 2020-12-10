@@ -24,6 +24,7 @@ const Wrapper = styled.div`
   background-repeat: no-repeat;
   position: relative;
 `;
+
 const Container = styled.div`
   position: absolute;
   max-width: 500px;

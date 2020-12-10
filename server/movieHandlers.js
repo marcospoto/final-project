@@ -60,13 +60,42 @@ const getMovieUser = async (req, res) => {
   }
 };
 
-const createFavorite = async (email) => {
+const handleFavorite = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+  console.log("*****", req.body);
+  const { email, movie } = req.body;
+
+  await client.connect();
+  const db = client.db("movieProject");
+
   console.log("createFavorite");
-  return null;
+
+  const foundUser = await db
+    .collection("movieUsers")
+    .find({ email: email })
+    .toArray();
+  console.log(foundUser);
+
+  if (foundUser.length === 0) {
+    await db
+      .collection("movieUsers")
+      .insertOne({ email, displayName, photoURL });
+    res.status(201).json({
+      status: 201,
+      data: "new user created",
+    });
+  } else {
+    res.status(201).json({
+      status: 201,
+      data: "found user",
+    });
+  }
+
+  client.close();
 };
 
 module.exports = {
   addMovieUser,
   getMovieUser,
-  createFavorite,
+  handleFavorite,
 };

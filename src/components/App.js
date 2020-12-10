@@ -4,6 +4,7 @@ import { HomePage } from "./HomePage";
 import { MovieDetails } from "./MovieDetails";
 import { Header } from "./Header";
 import { LoginForm } from "./LoginForm";
+import { Favorites } from "./Favorites";
 
 import GlobalStyles from "./GlobalStyles";
 
@@ -20,6 +21,9 @@ function App() {
         </Route>
         <Route exact path="/login">
           <LoginForm />
+        </Route>
+        <Route exact path="/favorites">
+          <Favorites />
         </Route>
         <Route exact path="/movie/:id">
           <MovieDetails />

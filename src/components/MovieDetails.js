@@ -3,8 +3,9 @@ import React, { useEffect, useContext, createContext, useState } from "react";
 import { URL, KEY, Image } from "../API";
 import styled from "styled-components";
 import { CastGrid } from "./CastGrid";
-import { NavLink } from "react-router-dom";
 import moment from "moment";
+import { useDispatch } from "react-redux";
+import { addMovie } from "../actions";
 
 export const MovieDetails = () => {
   const { id } = useParams();
@@ -40,6 +41,10 @@ export const MovieDetails = () => {
 
   const castNames = cast.map((cast) => cast?.name + ", ");
 
+  const dispatch = useDispatch();
+
+  console.log(movie);
+
   return (
     <Wrapper>
       <Main>
@@ -74,6 +79,7 @@ export const MovieDetails = () => {
             Summary
             <Summary>{movie?.overview}</Summary>
           </SummaryContainer>
+          <button onClick={() => dispatch(addMovie({ movie }))}></button>
         </InfoContainer>
       </Main>
       <div>
@@ -100,10 +106,12 @@ const InfoHeader = styled.div`
   padding: 20px;
 `;
 
-const MovieTitle = styled.h1``;
+const MovieTitle = styled.h1`
+  font-size: 40px;
+`;
 
 const MovieImage = styled.img`
-  width: 400px;
+  width: 450px;
   height: 600px;
   margin: 50px;
   border-radius: 30px;
@@ -133,10 +141,12 @@ const ScoreTitle = styled.h2`
   margin-bottom: 15px;
 `;
 
-const ScoreText = styled.p``;
+const ScoreText = styled.p`
+  font-size: 25px;
+`;
 
 const Score = styled.h1`
-  text-align: center;
+  display: flex;
   align-items: center;
   min-width: 60px;
   min-height: 60px;
@@ -145,6 +155,7 @@ const Score = styled.h1`
 `;
 const SummaryContainer = styled.h3`
   padding: 15px 0;
+  font-size: 25px;
 `;
 const Summary = styled.h5`
   padding: 15px 0;
@@ -152,7 +163,7 @@ const Summary = styled.h5`
 
 const CastNamesContainer = styled.div`
   display: flex;
-  font-size: 1rem;
+  font-size: 20px;
   margin: 10px;
 `;
 

@@ -17,7 +17,7 @@ export const Header = () => {
   //   loginButton = <Option2>Sign in</Option2>;
   // }
 
-  console.log(appUser);
+  // console.log(appUser);
 
   return (
     <Wrapper>
@@ -83,6 +83,7 @@ const NavigationLink = styled(NavLink)`
   font-weight: bold;
   margin-left: 13px;
   display: flex;
+  font-size: 20px;
 `;
 
 const Option = styled.div`

@@ -36,11 +36,11 @@ const FirebaseProvider = ({ children, signOut, user }) => {
 
   useEffect(() => {
     const unlisten = firebaseAppAuth.onAuthStateChanged((user) => {
-      console.log("outside listener", user);
+      // console.log("outside listener", user);
 
       if (user) {
         // setAppUser(user);
-        console.log("signed in current user", user);
+        // console.log("signed in current user", user);
         fetch(`/users`, {
           method: "post",
           headers: {
@@ -55,14 +55,14 @@ const FirebaseProvider = ({ children, signOut, user }) => {
           .then((res) => res.json())
           .then((json) => {
             setAppUser(user);
-            console.log("------");
-            console.log(json.data);
+            // console.log("------");
+            // console.log(json.data);
 
             // Step 1: Fetch user enamil from MongoDB and apply to appUserContext
             // Step 2: If no email exists, create one instead
           });
       } else {
-        console.log("signed out user:", user);
+        // console.log("signed out user:", user);
         setAppUser({});
       }
     });
@@ -72,7 +72,7 @@ const FirebaseProvider = ({ children, signOut, user }) => {
     };
   }, []);
 
-  console.log(appUser);
+  // console.log(appUser);
 
   return (
     <FirebaseContext.Provider
