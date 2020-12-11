@@ -61,35 +61,25 @@ const getMovieUser = async (req, res) => {
 };
 
 const handleFavorite = async (req, res) => {
-  const client = await MongoClient(MONGO_URI, options);
-  console.log("*****", req.body);
   const { email, movie } = req.body;
 
+  const client = await MongoClient(MONGO_URI, options);
   await client.connect();
   const db = client.db("movieProject");
-
-  console.log("createFavorite");
-
-  const foundUser = await db
-    .collection("movieUsers")
-    .find({ email: email })
-    .toArray();
-  console.log(foundUser);
-
-  if (foundUser.length === 0) {
-    await db
-      .collection("movieUsers")
-      .insertOne({ email, displayName, photoURL });
-    res.status(201).json({
-      status: 201,
-      data: "new user created",
-    });
-  } else {
-    res.status(201).json({
-      status: 201,
-      data: "found user",
-    });
-  }
+  console.log(email);
+  var movieUser = await db.collection("movieUsers").updateOne(
+    { email: email },
+    {
+      $set: {
+        favorites: movie.movie.id,
+      },
+    }
+  );
+  // console.log(movieUser);
+  res.status(201).json({
+    status: 201,
+    data: movieUser,
+  });
 
   client.close();
 };

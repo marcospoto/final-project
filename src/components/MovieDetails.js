@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { CastGrid } from "./CastGrid";
 import moment from "moment";
 import { useDispatch } from "react-redux";
-import { addMovie } from "../actions";
+import { useMovies } from "./MovieContext";
 
 export const MovieDetails = () => {
   const { id } = useParams();
@@ -13,6 +13,7 @@ export const MovieDetails = () => {
   const [cast, setcast] = useState([]);
   const [actors, setActors] = useState(false);
   const [buttonText, setButtonText] = useState("Show actors");
+  const { addMovie } = useMovies();
 
   useEffect(() => {
     fetch(`${URL}movie/${id}?api_key=${KEY}&language=en-US`)
@@ -42,8 +43,6 @@ export const MovieDetails = () => {
   const castNames = cast.map((cast) => cast?.name + ", ");
 
   const dispatch = useDispatch();
-
-  console.log(movie);
 
   return (
     <Wrapper>
@@ -79,7 +78,7 @@ export const MovieDetails = () => {
             Summary
             <Summary>{movie?.overview}</Summary>
           </SummaryContainer>
-          <button onClick={() => dispatch(addMovie({ movie }))}></button>
+          <button onClick={() => addMovie({ movie })}>Favorite</button>
         </InfoContainer>
       </Main>
       <div>

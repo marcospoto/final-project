@@ -11,15 +11,9 @@ const options = {
   useUnifiedTopology: true,
 };
 
-console.log(process.cwd());
 const createUser = async (req, res) => {
-  console.log("mongo_uri", MONGO_URI);
-  // const returningUser = await getUser(req.body.email);
-  // console.log(returningUser);
   const client = await MongoClient(MONGO_URI, options);
-  console.log(req.body);
   const { email, displayName, photoURL } = req.body;
-  console.log(email);
   await client.connect();
 
   const db = client.db("movieProject");
@@ -28,7 +22,6 @@ const createUser = async (req, res) => {
     .find({ email: email })
     .toArray();
   console.log(foundUser);
-
   if (foundUser.length === 0) {
     await db
       .collection("movieUsers")
@@ -47,7 +40,32 @@ const createUser = async (req, res) => {
   client.close();
 };
 
+const getUser = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+
+  await client.connect();
+
+  const db = client.db("movieProject");
+
+  const movieUser = await db.collection("movieUsers").findOne({
+    email: req.params.email,
+  });
+
+  if (!movieUser) {
+    res.status(404).json({
+      status: 404,
+      message: "No user",
+    });
+  } else {
+    res.status(200).json({
+      status: 200,
+      movieUser: movieUser,
+    });
+  }
+  client.close();
+};
+
 module.exports = {
   createUser,
-  // getUser,
+  getUser,
 };

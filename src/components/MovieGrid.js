@@ -10,7 +10,7 @@ export const MovieGrid = () => {
   return (
     <Wrapper>
       {movies.map((movie, index) => {
-        console.log(movie);
+        // console.log(movie);
         return (
           <ImageContainer key={index}>
             <NavigationLink exact to={`/movie/${movie.id}`}>

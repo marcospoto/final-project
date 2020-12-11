@@ -6,17 +6,11 @@ import { MovieGrid } from "./MovieGrid";
 import { useMovies } from "./MovieContext";
 
 export const HomePage = () => {
+  const buttonRef = useRef(null);
+
   const { movies, handleClick } = useMovies();
-  // console.log(movies[0]?.backdrop_path);
 
   const ref = useRef(null);
-
-  const getPosition = () => {
-    console.log(ref.current);
-    if (ref.current) {
-      ref.current.scrollIntoView();
-    }
-  };
 
   return (
     <Wrapper>
@@ -31,7 +25,7 @@ export const HomePage = () => {
       <ButtonContainer>
         <span ref={ref}></span>
         <LoadMovies
-          href="#"
+          ref={buttonRef}
           onClick={() => {
             handleClick();
             return false;
@@ -40,7 +34,6 @@ export const HomePage = () => {
           load more
         </LoadMovies>
       </ButtonContainer>
-      {ref && getPosition()}
     </Wrapper>
   );
 };

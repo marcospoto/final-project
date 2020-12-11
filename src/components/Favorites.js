@@ -12,17 +12,17 @@ export const Favorites = () => {
   console.log(movieItems);
 
   return (
-    <div>
+    <Wrapper>
       {movieItems.map((movie, index) => (
         <FavoriteMovies movie={movie} index={index} />
       ))}
-    </div>
+    </Wrapper>
   );
 };
 
 const FavoriteMovies = ({ movie, index }) => {
   return (
-    <div>
+    <Wrapper>
       <ImageContainer key={index}>
         <NavigationLink exact to={`/movie/${movie.movie.id}`}>
           <MovieImage
@@ -33,30 +33,17 @@ const FavoriteMovies = ({ movie, index }) => {
           />
         </NavigationLink>
       </ImageContainer>
-    </div>
+    </Wrapper>
   );
 };
 
-//   return (
-//     <div>
-//       {movieItems.map((movie, index) => {
-//         console.log(movie.movie);
-//         return (
-//           <ImageContainer key={index}>
-//             <NavigationLink exact to={`/movie/${movie.movie.id}`}>
-//               <MovieImage
-//                 src={
-//                   movie.movie.poster_path &&
-//                   `${Image}w500${movie.movie.poster_path}`
-//                 }
-//               />
-//             </NavigationLink>
-//           </ImageContainer>
-//         );
-//       })}
-//     </div>
-//   );
-// };
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 40px;
+`;
 
 const ImageContainer = styled.div``;
 

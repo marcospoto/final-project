@@ -8,16 +8,6 @@ import { ProfileMenu } from "./ProfileMenu";
 
 export const Header = () => {
   const { appUser, handleSignOut } = useContext(FirebaseContext);
-  // const { currentUser } = useCurrentUser();
-
-  // var loginButton;
-  // if (appUser) {
-  //   loginButton = <Option>{appUser.displayName}</Option>;
-  // } else {
-  //   loginButton = <Option2>Sign in</Option2>;
-  // }
-
-  // console.log(appUser);
 
   return (
     <Wrapper>
@@ -37,12 +27,6 @@ export const Header = () => {
           </NavigationLink>
         </Div>
       )}
-      {/* <Div>
-        <NavigationLink to="/bookmarks">
-          <FiBookmark />
-          <Option>Bookmarks</Option>
-        </NavigationLink>
-      </Div> */}
     </Wrapper>
   );
 };

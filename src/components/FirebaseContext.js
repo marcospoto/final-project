@@ -36,43 +36,48 @@ const FirebaseProvider = ({ children, signOut, user }) => {
 
   useEffect(() => {
     const unlisten = firebaseAppAuth.onAuthStateChanged((user) => {
-      // console.log("outside listener", user);
-
-      if (user) {
-        // setAppUser(user);
-        // console.log("signed in current user", user);
-        fetch(`/users`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-          }),
-        })
-          .then((res) => res.json())
-          .then((json) => {
-            setAppUser(user);
-            // console.log("------");
-            // console.log(json.data);
-
-            // Step 1: Fetch user enamil from MongoDB and apply to appUserContext
-            // Step 2: If no email exists, create one instead
-          });
-      } else {
-        // console.log("signed out user:", user);
-        setAppUser({});
-      }
+      if (user) fetchUser(user);
+      else setAppUser({});
     });
 
-    return () => {
-      unlisten();
-    };
+    return () => unlisten();
   }, []);
 
-  // console.log(appUser);
+  const fetchUser = (user) => {
+    fetch(`/users/` + user.email, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (!json.movieUser) postUser(user);
+        else setAppUser(json.movieUser);
+      });
+  };
+
+  const postUser = (user) => {
+    fetch(`/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        setAppUser(json.data);
+      });
+  };
+
+  console.log("appUser");
+  console.log(appUser);
 
   return (
     <FirebaseContext.Provider

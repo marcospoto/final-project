@@ -30,17 +30,10 @@ express()
   .use(express.urlencoded({ extended: false }))
 
   .post("/users", createUser)
-  // .get("/users", getUser)
+  .get("/users/:email", getUser)
 
   .post("/movie-users", addMovieUser)
   .get("/movie-users", getMovieUser)
-  .post("/favorites", handleFavorite)
-
-  // var movieUser = {
-  //   email: 'marcospoto@hotmail.com',
-  //   favorites: [
-  //     '12345', '54352', '12355'
-  //   ]
-  // }
+  .put("/favorites", handleFavorite)
 
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));
