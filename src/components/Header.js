@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { FiHome, FiUser, FiBookmark } from "react-icons/fi";
+import { FiHome, FiUser } from "react-icons/fi";
 import { FirebaseContext } from "./FirebaseContext";
 import { ProfileMenu } from "./ProfileMenu";
 
@@ -12,18 +12,25 @@ export const Header = () => {
   return (
     <Wrapper>
       <MobileHeader></MobileHeader>
+      <div>
+        <Div>
+          <NavigationLink exact to="/">
+            <FiHome />
+            <Option> Home</Option>
+          </NavigationLink>
+        </Div>
+      </div>
+
       <Div>
-        <NavigationLink exact to="/">
-          <FiHome />
-          <Option> Home</Option>
-        </NavigationLink>
+        <h1>Movies</h1>
       </Div>
+
       {appUser.email ? (
         <ProfileMenu />
       ) : (
         <Div>
           <NavigationLink to="/login">
-            <FiUser />
+            <FiUser /> <Option> Sign in</Option>
           </NavigationLink>
         </Div>
       )}
@@ -54,20 +61,20 @@ const Div = styled.span`
   display: inline;
   text-decoration: none;
   padding: 10px;
-  :hover {
-    color: purple;
-    background: rgb(76, 0, 255, 0.2);
-    border-radius: 20px;
-  }
 `;
 
 const NavigationLink = styled(NavLink)`
   text-decoration: none;
   color: white;
   font-weight: bold;
-  margin-left: 13px;
+  margin: 0 13px;
   display: flex;
   font-size: 20px;
+  padding: 10px;
+  :hover {
+    color: purple;
+    border-radius: 20px;
+  }
 `;
 
 const Option = styled.div`

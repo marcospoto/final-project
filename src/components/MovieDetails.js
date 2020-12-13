@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
-import React, { useEffect, useContext, createContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { URL, KEY, Image } from "../API";
 import styled from "styled-components";
 import { CastGrid } from "./CastGrid";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { useMovies } from "./MovieContext";
+import { FiStar } from "react-icons/fi";
+import { IconContext } from "react-icons";
 
 export const MovieDetails = () => {
   const { id } = useParams();
@@ -16,6 +18,7 @@ export const MovieDetails = () => {
   const { addMovie } = useMovies();
 
   useEffect(() => {
+
     fetch(`${URL}movie/${id}?api_key=${KEY}&language=en-US`)
       .then((res) => res.json())
       .then((res) => {
@@ -35,6 +38,7 @@ export const MovieDetails = () => {
     setActors(!actors);
     const isButtonToggled = !buttonText;
     const changeText = isButtonToggled ? "Show actors" : "Hide actors";
+
     return setButtonText(changeText);
   };
 
@@ -78,7 +82,23 @@ export const MovieDetails = () => {
             Summary
             <Summary>{movie?.overview}</Summary>
           </SummaryContainer>
-          <button onClick={() => addMovie({ movie })}>Favorite</button>
+          <Div>
+            <FavoriteButton onClick={() => addMovie({ movie })}>
+              <IconContext.Provider
+                value={{
+                  color: "yellow",
+
+                  size: "2em",
+                  className: "global-class-name",
+                }}
+              >
+                <div>
+                  <FiStar />
+                </div>
+              </IconContext.Provider>
+              <Option> Favorite</Option>
+            </FavoriteButton>
+          </Div>
         </InfoContainer>
       </Main>
       <div>
@@ -91,7 +111,6 @@ export const MovieDetails = () => {
     </Wrapper>
   );
 };
-
 const Wrapper = styled.div``;
 
 const Main = styled.div`
@@ -158,6 +177,35 @@ const SummaryContainer = styled.h3`
 `;
 const Summary = styled.h5`
   padding: 15px 0;
+`;
+
+const Div = styled.span`
+  display: inline;
+  padding: 10px;
+`;
+
+const FavoriteButton = styled.button`
+  text-decoration: none;
+  background-color: #222;
+  color: white;
+  font-weight: bold;
+  margin: 0 13px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 20px;
+  padding: 10px;
+  border: none;
+
+  cursor: pointer;
+  :hover {
+    color: yellow;
+    border-radius: 20px;
+  }
+`;
+
+const Option = styled.div`
+  margin: 0 10px;
 `;
 
 const CastNamesContainer = styled.div`

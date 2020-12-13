@@ -1,38 +1,71 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { getMovieArray } from "../reducers";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Image } from "../API";
-import { useDispatch } from "react-redux";
+import { FirebaseContext } from "./FirebaseContext";
+import { useMovies } from "./MovieContext";
+import { URL, KEY } from "../API";
 
 export const Favorites = () => {
   const movieItems = useSelector(getMovieArray);
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const { appUser } = useContext(FirebaseContext);
+  const { removeMovie } = useMovies();
 
-  console.log(movieItems);
+  useEffect(() => {
+    getByIds(appUser.favorites).then((response) => {
+      console.log(response);
+      setFavoriteMovies(response);
+    });
+  }, [appUser]);
 
+  const getByIds = async (ids) => {
+    //put all promises in an Array so we can let them run and be awaited
+    //await is bad practise in loops and usually does not work
+    let requests = [];
+    let responses = [];
+
+    for (let id in ids)
+      requests.push(
+        fetch(`${URL}movie/${ids[id]}?api_key=${KEY}&language=en-US`)
+          .then((res) => res.json())
+          .then((res) => {
+            responses.push(res);
+          })
+      );
+
+    //Await all requests
+    await Promise.all(requests);
+
+    //return all responses
+    return responses;
+  };
+
+  console.log(favoriteMovies);
+
+  const FavoriteMovie = ({ movie, index }) => {
+    return (
+      <Wrapper>
+        <ImageContainer key={index}>
+          <NavigationLink exact to={`/movie/${movie.id}`}>
+            <MovieImage
+              src={movie.poster_path && `${Image}w500${movie.poster_path}`}
+            />
+            <button onClick={() => removeMovie({ movie })}>
+              Remove from favorites
+            </button>
+          </NavigationLink>
+        </ImageContainer>
+      </Wrapper>
+    );
+  };
   return (
     <Wrapper>
-      {movieItems.map((movie, index) => (
-        <FavoriteMovies movie={movie} index={index} />
+      {favoriteMovies?.map((movie, index) => (
+        <FavoriteMovie key={movie.id} movie={movie} index={index} />
       ))}
-    </Wrapper>
-  );
-};
-
-const FavoriteMovies = ({ movie, index }) => {
-  return (
-    <Wrapper>
-      <ImageContainer key={index}>
-        <NavigationLink exact to={`/movie/${movie.movie.id}`}>
-          <MovieImage
-            src={
-              movie.movie.poster_path &&
-              `${Image}w500${movie.movie.poster_path}`
-            }
-          />
-        </NavigationLink>
-      </ImageContainer>
     </Wrapper>
   );
 };

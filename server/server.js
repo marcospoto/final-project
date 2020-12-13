@@ -5,7 +5,9 @@ const { createUser, getUser } = require("./handlers");
 const {
   addMovieUser,
   getMovieUser,
-  handleFavorite,
+  addFavorite,
+  getUserFavorites,
+  deleteFavorite,
 } = require("./movieHandlers");
 
 require("dotenv").config();
@@ -31,9 +33,11 @@ express()
 
   .post("/users", createUser)
   .get("/users/:email", getUser)
+  .put("/favorites", addFavorite)
+  .put("/users-favorites/:displayName", deleteFavorite)
+  .get("/users-favorites/:displayName", getUserFavorites)
 
   .post("/movie-users", addMovieUser)
   .get("/movie-users", getMovieUser)
-  .put("/favorites", handleFavorite)
 
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));

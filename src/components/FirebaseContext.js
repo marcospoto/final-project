@@ -71,13 +71,13 @@ const FirebaseProvider = ({ children, signOut, user }) => {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
+        // console.log(json);
         setAppUser(json.data);
       });
   };
 
-  console.log("appUser");
-  console.log(appUser);
+  // console.log("appUser");
+  // console.log(appUser);
 
   return (
     <FirebaseContext.Provider

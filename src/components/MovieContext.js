@@ -66,8 +66,31 @@ export const MovieProvider = ({ children }) => {
       });
   };
 
+  const removeMovie = (movie) => {
+    fetch("/users-favorites/:displayName", {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({
+        movie: movie,
+        email: appUser.email,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        dispatch({
+          type: "REMOVE_ITEM",
+          movie,
+        });
+      });
+  };
+
   return (
-    <MovieContext.Provider value={{ movies, handleClick, addMovie }}>
+    <MovieContext.Provider
+      value={{ movies, handleClick, addMovie, removeMovie }}
+    >
       {children}
     </MovieContext.Provider>
   );

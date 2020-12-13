@@ -71,6 +71,8 @@ const Option = styled.div`
 `;
 
 const Nav = styled.div`
+  margin-top: 14px;
+
   border-radius: 8px;
   position: absolute;
   top: 50px;

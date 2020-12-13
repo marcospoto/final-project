@@ -10,9 +10,9 @@ const options = {
 };
 
 const addMovieUser = async (req, res) => {
-  console.log("addMovieUser");
+  // console.log("addMovieUser");
   const client = await MongoClient(MONGO_URI, options);
-  console.log(req.body);
+  // console.log(req.body);
   await client.connect();
 
   const db = client.db("movieProject");
@@ -28,52 +28,78 @@ const addMovieUser = async (req, res) => {
 };
 
 const getMovieUser = async (req, res) => {
-  console.log();
-  const { email } = req.body;
-  console.log(email);
-  try {
-    const client = await MongoClient(MONGO_URI, options);
-    await client.connect();
+  const client = await MongoClient(MONGO_URI, options);
 
-    const db = client.db("movieProject");
-    const users = await db.collection("movieUsers").findOne().toArray();
-    if (seats.length === 0) {
-      res.status(404).json({
-        status: 404,
-        message: "No user found",
-      });
-    } else {
-      const newUser = seats.reduce((acc, cur, i) => {
-        acc[cur._id] = cur;
-        return acc;
-      }, {});
+  await client.connect();
 
-      res.status(200).json({
-        status: 200,
-        email: email,
-        favorite: favorite,
-      });
-    }
-    client.close();
-  } catch (e) {
-    console.log(e);
+  const db = client.db("movieProject");
+
+  const movieUser = await db.collection("movieUsers").findOne({
+    email: req.params.email,
+  });
+
+  if (!movieUser) {
+    res.status(404).json({
+      status: 404,
+      message: "No user",
+    });
+  } else {
+    res.status(200).json({
+      status: 200,
+      movieUser: movieUser,
+    });
   }
+  client.close();
 };
 
-const handleFavorite = async (req, res) => {
-  const { email, movie } = req.body;
+//   console.log();
+//   const { email } = req.body;
+//   console.log(email);
+//   try {
+//     const client = await MongoClient(MONGO_URI, options);
+//     await client.connect();
 
+//     const db = client.db("movieProject");
+//     const user = await db.collection("movieUsers").findOne().toArray();
+//     if (user.length === 0) {
+//       res.status(404).json({
+//         status: 404,
+//         message: "No user found",
+//       });
+//     } else {
+//       const newUser = user.reduce((acc, cur, i) => {
+//         acc[cur._id] = cur;
+//         return acc;
+//       }, {});
+
+//       res.status(200).json({
+//         status: 200,
+//         user: newUser,
+//         email: email,
+//         favorite: favorite,
+//       });
+//     }
+//     client.close();
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
+
+const addFavorite = async (req, res) => {
+  const { email, movie } = req.body;
+  const movieId = movie.movie.id;
   const client = await MongoClient(MONGO_URI, options);
   await client.connect();
   const db = client.db("movieProject");
-  console.log(email);
+  // console.log(email);
   var movieUser = await db.collection("movieUsers").updateOne(
     { email: email },
     {
-      $set: {
-        favorites: movie.movie.id,
+      $addToSet: {
+        favorites: movieId,
       },
-    }
+    },
+    true
   );
   // console.log(movieUser);
   res.status(201).json({
@@ -84,8 +110,60 @@ const handleFavorite = async (req, res) => {
   client.close();
 };
 
+const deleteFavorite = async (req, res) => {
+  const { email, movie } = req.body;
+  const movieId = movie.movie.id;
+  const client = await MongoClient(MONGO_URI, options);
+  await client.connect();
+  const db = client.db("movieProject");
+  // console.log(email);
+  var movieUser = await db.collection("movieUsers").updateOne(
+    { email: email },
+    {
+      $pull: {
+        favorites: { $in: [movieId] },
+      },
+    },
+    true
+  );
+  // console.log(movieUser);
+  res.status(201).json({
+    status: 201,
+    data: movieUser,
+  });
+
+  client.close();
+};
+
+const getUserFavorites = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+
+  await client.connect();
+
+  const db = client.db("movieProject");
+
+  const movieUser = await db.collection("movieUsers").findOne({
+    displayName: req.params.displayName,
+  });
+
+  if (!movieUser) {
+    res.status(404).json({
+      status: 404,
+      message: "No user",
+    });
+  } else {
+    res.status(200).json({
+      status: 200,
+      movieUser: movieUser.favorites,
+    });
+  }
+  client.close();
+};
+
 module.exports = {
   addMovieUser,
   getMovieUser,
-  handleFavorite,
+  addFavorite,
+  getUserFavorites,
+  deleteFavorite,
 };

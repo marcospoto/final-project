@@ -21,7 +21,7 @@ const createUser = async (req, res) => {
     .collection("movieUsers")
     .find({ email: email })
     .toArray();
-  console.log(foundUser);
+  // console.log(foundUser);
   if (foundUser.length === 0) {
     await db
       .collection("movieUsers")
