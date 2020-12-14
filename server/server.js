@@ -34,7 +34,7 @@ express()
   .post("/users", createUser)
   .get("/users/:email", getUser)
   .put("/favorites", addFavorite)
-  .put("/users-favorites/:displayName", deleteFavorite)
+  .put("/users-favorites", deleteFavorite)
   .get("/users-favorites/:displayName", getUserFavorites)
 
   .post("/movie-users", addMovieUser)

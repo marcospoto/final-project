@@ -111,6 +111,7 @@ const addFavorite = async (req, res) => {
 };
 
 const deleteFavorite = async (req, res) => {
+  console.log(req);
   const { email, movie } = req.body;
   const movieId = movie.movie.id;
   const client = await MongoClient(MONGO_URI, options);

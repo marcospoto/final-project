@@ -22,7 +22,7 @@ export const Header = () => {
       </div>
 
       <Div>
-        <h1>Movies</h1>
+        <h1>MovieDb</h1>
       </Div>
 
       {appUser.email ? (

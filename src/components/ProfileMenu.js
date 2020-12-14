@@ -4,7 +4,6 @@ import { FiUser } from "react-icons/fi";
 import { useDetectOutsideClick } from "./useDetectOutsideClick";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { Favorites } from "./Favorites";
 
 export const ProfileMenu = () => {
   const { appUser, handleSignOut } = useContext(FirebaseContext);
@@ -25,7 +24,9 @@ export const ProfileMenu = () => {
         <Nav ref={dropdownRef}>
           <ul>
             <li>
-              <NavigationLink to="/favorites">Favorites</NavigationLink>
+              <NavigationLink onClick={onClick} to="/favorites">
+                Favorites
+              </NavigationLink>
             </li>
             <li>
               <NavigationLink onClick={handleSignOut} exact to="/">

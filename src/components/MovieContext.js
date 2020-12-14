@@ -12,7 +12,9 @@ export const useMovies = () => {
 export const MovieProvider = ({ children }) => {
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const { appUser } = useContext(FirebaseContext);
+  const { appUser, addUserFavorite, removeUserFavorite } = useContext(
+    FirebaseContext
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -63,11 +65,12 @@ export const MovieProvider = ({ children }) => {
           type: "ADD_Movie",
           movie,
         });
+        addUserFavorite(movie.movie.id);
       });
   };
 
   const removeMovie = (movie) => {
-    fetch("/users-favorites/:displayName", {
+    fetch("/users-favorites", {
       method: "PUT",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -81,9 +84,10 @@ export const MovieProvider = ({ children }) => {
       .then((data) => {
         console.log(data);
         dispatch({
-          type: "REMOVE_ITEM",
+          type: "REMOVE_Movie",
           movie,
         });
+        removeUserFavorite(movie.movie.id);
       });
   };
 

@@ -76,12 +76,29 @@ const FirebaseProvider = ({ children, signOut, user }) => {
       });
   };
 
-  // console.log("appUser");
-  // console.log(appUser);
+  const addUserFavorite = (favorite) => {
+    appUser.favorites = [...appUser.favorites, favorite];
+    setAppUser(appUser);
+  };
+
+  const removeUserFavorite = (favorite) => {
+    var filteredFavorites = appUser.favorites.filter(
+      (userFavorite) => userFavorite !== favorite
+    );
+    appUser.favorites = filteredFavorites;
+    setAppUser(appUser);
+  };
 
   return (
     <FirebaseContext.Provider
-      value={{ appUser, signInWithGoogle, handleSignOut, message }}
+      value={{
+        appUser,
+        signInWithGoogle,
+        handleSignOut,
+        message,
+        addUserFavorite,
+        removeUserFavorite,
+      }}
     >
       {children}
     </FirebaseContext.Provider>

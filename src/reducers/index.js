@@ -14,6 +14,7 @@ export default function movieReducer(state = initialState, action) {
     }
 
     case "REMOVE_Movie": {
+      console.log(action);
       const stateCopy = { ...state }; // New object we CAN mutate
       delete stateCopy[action.movie.movie.id];
 
